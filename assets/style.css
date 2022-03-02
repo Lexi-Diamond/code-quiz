@@ -1,3 +1,17 @@
 header {
-    
+    font-size: 30Px;
+    text-align: center;
+}
+h1 {
+    font-size: 20px;
+    text-align: center;
+}
+.button {
+    background-color: aqua;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 20px;
+    border: 3px
 }
