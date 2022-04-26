@@ -1,40 +1,24 @@
 
-const welcomePage = document.querySelector("#welcome");
-const startQuizBtn = document.querySelector("#startQuiz");
-
-startQuizBtn.addEventListener("click", function () {
-    hide(welcomePage);
-    startTimer();
-    renderQuestion();
-    show(quiz);
-});
-
-function startTimer() {
-    timerEl.textContent = timeGiven;
-    interval = setInterval(function () {
-        secondsElapsed++;
-        timerEl.textContent = timeGiven - secondsElapsed;
-        if (secondsElapsed >= timeGiven) {
-            currentQ = questions.length;
-            nextQuestion();
-        }
-    }, 1000);
-}
-
-const quiz = document.querySelector("#quiz");
-const questionEL = document.querySelector("#question");
-const answers = document.querySelector("#answers");
+const welcomeEl = document.querySelector("#welcome");
+const startQuizBtnEl = document.querySelector("#startQuiz");
 
 
-const inputScore = document.querySelector("#inputScore");
+const quizEl = document.querySelector("#quiz");
+const questionEl = document.querySelector("#question");
+const answersEl = document.querySelector("#answers");
+
+
+const inputScoreEl = document.querySelector("#inputScore");
 const initialsEl = document.querySelector("#initials");
 const submitInitialsBtnEl = document.querySelector("#submitInitials");
 const userScoreEl = document.querySelector("#score");
+
 
 const highScoresEl = document.querySelector("#highScores");
 const scoresEl = document.querySelector("#scores");
 const goBackBtnEl = document.querySelector("#goBack");
 const clearScoresBtnEl = document.querySelector("#clearScores");
+
 
 const viewHScoresBtnEl = document.querySelector("#viewHScores");
 const timerEl = document.querySelector("#timer");
@@ -72,11 +56,12 @@ function nextQuestion() {
         if ((timeGiven - secondsElapsed) > 0)
             score += (timeGiven - secondsElapsed);
         userScoreEl.textContent = score;
-        hide(quiz);
-        show(inputScore);
+        hide(quizEl);
+        show(inputScoreEl);
         timerEl.textContent = 0;
     }
 }
+
 
 function checkAnswer(answer) {
     if (questions[currentQ].answer == questions[currentQ].choices[answer.id]) {
@@ -88,6 +73,7 @@ function checkAnswer(answer) {
         displayMessage("Wrong...");
     }
 }
+
 
 function displayMessage(m) {
     let messageHr = document.createElement("hr");
@@ -106,11 +92,12 @@ function hide(element) {
     element.style.display = "none";
 }
 
+//displays element
 function show(element) {
     element.style.display = "block";
 }
 
-
+//reset local variables
 function reset() {
     score = 0;
     currentQ = 0;
@@ -118,14 +105,16 @@ function reset() {
     timerEl.textContent = 0;
 }
 
+
 function renderQuestion() {
-    questions.textContent = questions[currentQ].title;
-    for (i = 0; i < answers.children.length; i++) {
-        answers.children[i].children[0].textContent = `${(i + 1)}: ${questions[currentQ].choices[i]}`;
+    questionEl.textContent = questions[currentQ].title;
+    for (i = 0; i < answersEl.children.length; i++) {
+        answersEl.children[i].children[0].textContent = `${(i + 1)}: ${questions[currentQ].choices[i]}`;
     }
 }
 
 function renderHighScores() {
+   
     scoresEl.innerHTML = "";
     show(highScoresEl);
     highScores = JSON.parse(localStorage.getItem("scores"));
@@ -140,18 +129,25 @@ function renderHighScores() {
 }
 
 
+
 viewHScoresBtnEl.addEventListener("click", function () {
-    hide(welcomePage);
-    hide(quiz);
-    hide(inputScore);
+    hide(welcomeEl);
+    hide(quizEl);
+    hide(inputScoreEl);
     renderHighScores();
     stopTimer();
     reset();
 });
 
 
+startQuizBtnEl.addEventListener("click", function () {
+    hide(welcomeEl);
+    startTimer();
+    renderQuestion();
+    show(quizEl);
+});
 
-answers.addEventListener("click", function (e) {
+answersEl.addEventListener("click", function (e) {
     if (e.target.matches("button")) {
         checkAnswer(e.target);
         nextQuestion();
@@ -167,7 +163,7 @@ submitInitialsBtnEl.addEventListener("click", function () {
         highScores = JSON.parse(localStorage.getItem("scores")) || [];
         highScores.push(userScore)
         localStorage.setItem("scores", JSON.stringify(highScores));
-        hide(inputScore);
+        hide(inputScoreEl);
         renderHighScores();
         reset();
     }
@@ -176,7 +172,7 @@ submitInitialsBtnEl.addEventListener("click", function () {
 
 goBackBtnEl.addEventListener("click", function () {
     hide(highScoresEl);
-    show(welcomePage);
+    show(welcomeEl);
 });
 
 
